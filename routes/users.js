@@ -4,11 +4,12 @@ let Food = require('../food')
 let login = require('../login')
 var multer =require('multer')
 var mongoose =require('mongoose')
-
+const uri = "mongodb+srv://manhtien465:tien1234@cluster0-vaatg.mongodb.net/xoay?retryWrites=true&w=majority";
 /* GET users listing. */
+
 const storage=multer.diskStorage({
   destination:function(req,file,cb){
-    cb(null,'./images')
+    cb(null,'./public/images')
   },
   filename: function(req,file,cb){
     cb(null ,Date.now() + file.originalname) 
@@ -16,7 +17,7 @@ const storage=multer.diskStorage({
 })
 const fileFilter = (req, file, cb) => {
     // reject a file
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' ||file.mimetype === 'image/jpg') {
       cb(null, true);
     } else {
       cb(null, false);
@@ -76,11 +77,23 @@ newfood.save()
 })
 })
 
-router.delete('/delete/:id', function(req, res, next) {
-Food.findById(req.params.id) 
-.then(foof=>food.remove().then(()=>{
-    res.json({success:true})
-}))  
-.catch(err=> res.status(404).json({success:true}))
-});
+router.delete('/delete', function(req, res, next) 
+  {
+    var id=req.body.id
+    Food.findByIdAndRemove(id).exec();
+  })
+router.post('/edit',upload.single("image"),function(req,res,next){
+  var id =req.body.id
+Food.findById(id,function(err,doc){
+if(err){
+  console.log();
+  
+}
+doc.title=req.body.title;
+doc.subtitle=req.body.subtitle;
+doc.content=req.body.content;
+doc.image=req.file.path;
+doc.save()
+})
+})
 module.exports = router;
