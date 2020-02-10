@@ -77,10 +77,16 @@ newfood.save()
 })
 })
 
-router.delete('/delete', function(req, res, next) 
+router.delete('/delete/:id', function(req, res, next) 
   {
-    var id=req.body.id
-    Food.findByIdAndRemove(id).exec();
+    
+    Food.findById(req.params.id)
+    .then(food=>{
+      food.remove().then(()=>{
+        res.json(food)
+      })
+    })
+    
   })
 router.post('/edit',upload.single("image"),function(req,res,next){
   var id =req.body.id
