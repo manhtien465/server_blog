@@ -12,12 +12,7 @@ const uri = "mongodb+srv://manhtien465:tien1234@cluster0-vaatg.mongodb.net/xoay?
 /**
  * Get port from environment and store in Express.
  */
-if(process.env.NODE_ENV ==='production'){
-  app.use(express.static('myblog/build'));
-  app.get('*',(req,res)=>{
-res.sendFile(path.resolve(__dirname,'myblog','build','index.html'))
-  })
-}
+
 var port = normalizePort(process.env.PORT || '3402');
 app.set('port', port);
 
