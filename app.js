@@ -6,8 +6,9 @@ const {MongoClient} = require('mongodb');
 const bodyparser =require('body-parser')
 var mongoose =require('mongoose')
 var logger = require('morgan');
+const config=require('config')
+const uri=config.get('mongoURL');
 
-const uri = "mongodb+srv://manhtien465:tien1234@cluster0-vaatg.mongodb.net/xoay?retryWrites=true&w=majority";
 mongoose.connect(uri,{useNewUrlParser:true,useCreateIndex:true,useUnifiedTopology:true})
 const connection=mongoose.connection;
 connection.once('open',()=>{
@@ -17,6 +18,7 @@ connection.once('open',()=>{
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var loginRouter = require('./routes/login');
 // const storage=multer.diskStorage({
 //   destination:'./pulic/images',
 //   filename: function(req,file,cb){
@@ -42,6 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/login', loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

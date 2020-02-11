@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 let Food = require('../food')
-let login = require('../login')
+
 var multer =require('multer')
 var mongoose =require('mongoose')
 const uri = "mongodb+srv://manhtien465:tien1234@cluster0-vaatg.mongodb.net/xoay?retryWrites=true&w=majority";
