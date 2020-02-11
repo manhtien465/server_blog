@@ -1,0 +1,56 @@
+#container{
+
+  #header{
+ grid-area: header;
+display: flex;
+background: rgba(255, 255, 255,0.9);
+    &__logo{
+width: 15%;
+
+    &--img{
+    img{
+      margin-left: 25%;
+    }
+    }
+    }
+    &__menutop{
+
+    margin-top:3%;
+    &--social{
+
+      a{
+        i{
+            font-size : 30px;
+            margin-right: 10px;
+            color:rgb(53, 49, 57);
+
+          .fab{
+            height : 30px;
+
+          }
+        }
+      }
+    }
+    &--menu{
+      margin-left :110%;
+      font-size: 30px;
+      grid-area: menu;
+      margin-top: -50px;
+
+a{
+  color:rgb(53, 49, 57);
+white-space: nowrap;
+margin-left: 20px;
+text-decoration: none;
+
+}
+    }}
+  }
+
+
+}
+#header__menutop--menu a:hover{
+  color:rgb(208, 117, 72);
+  background: rgb(208, 117, 72);
+
+}

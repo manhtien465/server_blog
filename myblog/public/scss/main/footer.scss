@@ -1,0 +1,18 @@
+.footer{
+
+  text-align: center;
+  &__social{
+    color:black;
+    text-align: center;
+    a{
+      i{
+        font-size: 30px;
+        color:black;
+        margin-left: 20px;
+      }
+    }
+  }
+  &__copyright{
+ margin-left: 30px;
+  }
+}

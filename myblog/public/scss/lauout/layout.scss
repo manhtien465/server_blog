@@ -1,0 +1,68 @@
+body{
+  width:100%;
+  color:black;
+}
+  #container{
+    display: grid;
+   grid-template-columns: repeat(6, 1fr);
+   grid-template-rows: auto ;
+   grid-column-gap: 20px;
+     grid-row-gap: 20px;
+     grid-template-areas:
+     "header header header header header header"
+     "main main main main main main "
+     " footer footer footer footer footer footer"
+     ;
+    #header{
+   grid-area: header;
+      display: flex;
+      position: fixed;
+      width: 100%;
+      z-index: 2;
+      &__logo{
+      width: 15%;
+
+      &--img{
+      img{
+
+        width: 60%;
+        height: auto;
+      }
+      }
+      }
+      &__menutop{
+     display: flex;
+      margin-top:3%;
+      &--social{
+        grid-area: social;
+        display: flex;
+        a{
+          i{
+
+
+            .fab{
+              height : 30px;
+
+            }
+          }
+        }
+      }
+      &--menu{
+
+
+        grid-area: menu;
+        display: flex;
+a{
+
+
+}
+      }}
+    }
+    #main{
+      grid-area: main;
+
+    }
+    .footer{
+        grid-area: footer;
+    }
+  }

@@ -7,11 +7,17 @@
 var app = require('../app');
 var debug = require('debug')('server:server');
 var http = require('http');
+const path =require("path")
 const uri = "mongodb+srv://manhtien465:tien1234@cluster0-vaatg.mongodb.net/xoay?retryWrites=true&w=majority";
 /**
  * Get port from environment and store in Express.
  */
-
+if(process.env.NODE_ENV ==='production'){
+  app.use(express.static('myblog/build'));
+  app.get('*',(req,res)=>{
+res.sendFile(path.resolve(__dirname,'myblog','build','index.html'))
+  })
+}
 var port = normalizePort(process.env.PORT || '3402');
 app.set('port', port);
 
@@ -20,7 +26,7 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-
+var io=require("socket.io")(server)
 /**
  * Listen on provided port, on all network interfaces.
  */

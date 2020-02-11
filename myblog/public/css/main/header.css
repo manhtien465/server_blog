@@ -1,0 +1,30 @@
+#container #header {
+  grid-area: header;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+  #container #header__logo {
+    width: 15%; }
+    #container #header__logo--img img {
+      margin-left: 25%; }
+  #container #header__menutop {
+    margin-top: 3%; }
+    #container #header__menutop--social a i {
+      font-size: 30px;
+      margin-right: 10px;
+      color: #353139; }
+      #container #header__menutop--social a i .fab {
+        height: 30px; }
+    #container #header__menutop--menu {
+      margin-left: 110%;
+      font-size: 30px;
+      grid-area: menu; }
+      #container #header__menutop--menu a {
+        color: #353139;
+        white-space: nowrap;
+        margin-left: 20px;
+        text-decoration: none; }
+
+#header__menutop--menu a:hover {
+  color: #d07548;
+  background: #d07548; }

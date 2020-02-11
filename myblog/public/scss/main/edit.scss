@@ -1,0 +1,81 @@
+// #edit{
+// max-width: 100%;
+//
+//   .edit__wrapper{
+//     display: flex;
+// width: 30%;
+//   .edit__list{
+//
+//     display: flex;
+//     margin-bottom: 10px;
+//     &--title{
+//         width: 2%;
+//       color:black;
+//       overflow: hidden;
+//       white-space: nowrap;
+//     }
+//     &--content{
+// width: 10%;
+//
+//       white-space: nowrap;
+// overflow: hidden;
+//   text-overflow:hidden;
+//       color:black;
+//     }
+//     &--date{
+// width: 15%;
+//       color:black;
+//     }
+//   }
+//   .edit__delete{
+//
+//   }}
+// }
+.edit__list:hover{
+  background: rgb(74, 93, 94);
+  color:white;
+}
+#edit{
+
+  .edit__wrapper{
+    margin-top: 5%;
+    display: grid;
+   grid-template-columns: repeat(12, 1fr);
+   grid-template-rows: auto ;
+   grid-column-gap: 20px;
+     grid-row-gap: 20px;
+     grid-template-areas:
+     "list list list list list list list list list list list delete"
+     ;
+     &--box{
+               grid-area: list;
+
+     .edit__list{
+ display: flex;
+       &--title{
+           width: 20%;
+           color:black;
+           overflow: hidden;
+           white-space: nowrap;
+       }
+       &--content{
+        width: 65%;
+        overflow: hidden;
+        white-space: nowrap;
+         color:black;
+       }
+       &--date{
+         width:5%;
+        margin-left: 10px;
+          color:black;
+       }
+     }
+      }
+     .edit__delete{
+          grid-area:delete;
+          overflow: hidden;
+          white-space: nowrap;
+           color:black;
+     }
+  }
+}
