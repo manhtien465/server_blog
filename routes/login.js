@@ -37,8 +37,8 @@ router.get('/', function(req, res, next) {
  
 });
 router.post("/add",upload.single("image"),(req,res)=>{
-    const{username,passwork,email}=req.body
-    if(!username||!passwork ||!email){
+    const{username,passwork,passworkagain,email}=req.body
+    if(!username||!passwork ||!email ||!passworkagain){
         return res.status(404).json({meg:"pls enter all fields"})
     }
     Users.findOne({email})
@@ -47,16 +47,12 @@ router.post("/add",upload.single("image"),(req,res)=>{
             return res.status(404).json({meg:"email have adready exist"})
         }
     })
-    Users.findOne({username})
-    .then(users=>{
-        if (users) {
-            return res.status(404).json({meg:"username have adready exist"})
-        }
-    })
+    
     
         var newUsers =new Users({
            username,
             passwork,
+            passworkagain,
             email,
         }
         )
@@ -67,7 +63,7 @@ router.post("/add",upload.single("image"),(req,res)=>{
                 newUsers.save()
                  .then(users=>{
                      Jwt.sign(
-                         {id:users._id},
+                         {users},
                          config.get('JwtSecret'),
                          {expiresIn:3600},
                          (err,token)=>{
@@ -76,11 +72,12 @@ router.post("/add",upload.single("image"),(req,res)=>{
                                  token,users
                              })
                             })
-                               .catch(err=>{
-                               res.send(err)
-                       })
+                               
                          }
                      )
+                     .catch(err=>{
+                       res.json(err)
+                     })
                       
             })
         })

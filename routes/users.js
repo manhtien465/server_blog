@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 let Food = require('../food')
-
+const auth =require("../middleware/auth")
 var multer =require('multer')
 var mongoose =require('mongoose')
 const uri = "mongodb+srv://manhtien465:tien1234@cluster0-vaatg.mongodb.net/xoay?retryWrites=true&w=majority";
@@ -34,30 +34,9 @@ router.get('/', function(req, res, next) {
     .then(food =>res.json(food))
  
 });
-router.get('/login', function(req, res, next) {
-    login.find()
-    .sort({account:-1})
-    .then(account =>res.json(account))
- 
-});
-router.post("/login/add",(req,res)=>{
-  
-   
-    var newaccount=new login({
-    username:req.body.username,
-      subtitle:req.body.username,
-      
-  
-  })
-  newaccount.save()
-  .then(account=>{
-      res.json(account)
-  })
-  .catch(err=>{
-      res.send(err)
-  })
-  })
-router.post("/add",upload.single("image"),(req,res)=>{
+
+
+router.post("/add",auth,upload.single("image"),(req,res)=>{
     console.log(req.file);
         var newfood =new Food({
             title:req.body.title,
@@ -77,7 +56,7 @@ newfood.save()
 })
 })
 
-router.delete('/delete/:id', function(req, res, next) 
+router.delete('/delete/:id',auth, function(req, res, next) 
   {
     
     Food.findById(req.params.id)
@@ -88,7 +67,7 @@ router.delete('/delete/:id', function(req, res, next)
     })
     
   })
-router.post('/edit',upload.single("image"),function(req,res,next){
+router.post('/edit',auth,upload.single("image"),function(req,res,next){
   var id =req.body.id
 Food.findById(id,function(err,doc){
 if(err){
