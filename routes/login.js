@@ -36,9 +36,9 @@ router.get('/', function(req, res, next) {
     .then(users =>res.json(users))
  
 });
-router.post("/add",upload.single("image"),(req,res)=>{
-    const{username,passwork,passworkagain,email}=req.body
-    if(!username||!passwork ||!email ||!passworkagain){
+router.post("/adduser",upload.single("image"),(req,res)=>{
+    const{username,passwork,email}=req.body
+    if(!username||!passwork ||!email){
         return res.status(404).json({meg:"pls enter all fields"})
     }
     Users.findOne({email})
@@ -52,7 +52,6 @@ router.post("/add",upload.single("image"),(req,res)=>{
         var newUsers =new Users({
            username,
             passwork,
-            passworkagain,
             email,
         }
         )

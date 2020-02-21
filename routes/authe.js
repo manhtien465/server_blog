@@ -35,7 +35,7 @@ router.get('/', auth, (req, res) => {
     .select('-password')
     .then(users => res.json(users));
 });
-router.post("/add",upload.single("image"),(req,res)=>{
+router.post("/login",upload.single("image"),(req,res)=>{
     const{ passwork,email}=req.body
     if(!passwork ||!email){
         return res.status(404).json({meg:"pls enter all fields"})

@@ -8,7 +8,8 @@ var mongoose =require('mongoose')
 var logger = require('morgan');
 const config=require('config')
 const uri=config.get('mongoURL');
-
+const graphqlHTTP= require('express-graphql')
+const schema=require("./scheme/schema")
 mongoose.connect(uri,{useNewUrlParser:true,useCreateIndex:true,useUnifiedTopology:true})
 const connection=mongoose.connection;
 connection.once('open',()=>{
@@ -19,16 +20,7 @@ var autheRouter =require('./routes/authe')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
-// const storage=multer.diskStorage({
-//   destination:'./pulic/images',
-//   filename: function(req,file,cb){
-//     cb(null,file.fieldname+'-' +Date.now()+path.extname(file.originalname))    /upload ảnh thát bại
-//   }
-// })
-// const upload=multer({
-//   storage:storage,
-//   limits:{fileSize:1000000}
-// }).single('image')
+
 var app = express();
 
 // view engine setup
@@ -46,6 +38,11 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/authe',autheRouter);
+app.use("/graphql",graphqlHTTP({
+   schema,
+   graphiql:true
+   
+}))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
