@@ -1,24 +1,18 @@
 var mongoose =require('mongoose')
 var Schema=mongoose.Schema;
-var Users= new Schema({
+var Usersfacebook= new Schema({
     username:{
          type:String,
          required:true,
          trim: true, index: true, unique :true 
     
     },
-    passwork:{
-        type:String,
-        required:true,
-        trim: true, index: true, unique :true
-   
-   },
    
    email:{
     type:String,
     required:true,
     trim: true, index: true,unique :true 
-}, 
+},
  
  
     
@@ -32,7 +26,7 @@ var Users= new Schema({
     timestamps:true,
 },
 {
-    collection: 'login'
+    collection: 'Userfacebook'
 },
 );
-module.exports= mongoose.model('users',Users);
+module.exports= mongoose.model('usersfacebook',Usersfacebook);
