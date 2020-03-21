@@ -1,7 +1,7 @@
 var mongoose =require('mongoose')
 var Schema=mongoose.Schema;
 var Usersfacebook= new Schema({
-    username:{
+    id:{
          type:String,
          required:true,
          trim: true, index: true, unique :true 
@@ -13,7 +13,7 @@ var Usersfacebook= new Schema({
     required:true,
     trim: true, index: true,unique :true 
 },
- 
+
  
     
     day:{

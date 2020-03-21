@@ -71,7 +71,7 @@ router.post('/edit',auth,upload.single("image"),function(req,res,next){
   var id =req.body.id
 Food.findById(id,function(err,doc){
 if(err){
-  console.log();
+  console.log(err)
   
 }
 doc.title=req.body.title;

@@ -1,15 +1,20 @@
-var express = require('express');
-var router = express.Router();
-var bcrypt =require("bcryptjs")
+const express = require('express');
+const router = require('express-promise-router')();
+const passport = require('passport');
+const passportConf =require('../passport');
 
-var passportFacebook = require('../config/passport-setup');
+var bcrypt =require("bcryptjs")
+var Usergoogle = require('../scheme/usersgoole');
+
 const key =require("../config/key")
-let Users = require('../scheme/users')
+const UserController=require("../controller/users")
+const { validateBody, schemas } = require('../helpers/routerHelpers');
 let UsersFacebook =require('../scheme/usersfacebook')
 var multer =require('multer')
 var mongoose =require('mongoose')
 const config=require('config')
 const Jwt =require("jsonwebtoken")
+
 /* GET users listing. */
 
 const storage=multer.diskStorage({
@@ -33,128 +38,16 @@ const upload=multer({
   limits:{fileSize:1000000},
   fileFilter: fileFilter
 })
+router.route("/manage-users")
+.get(UserController.manageUsers)
+router.route("/adduser")
+.post(validateBody(schemas.authSchema),UserController.register)
+router.route('/signin')
+  .post(passport.authenticate("local",{session:false}), UserController.signIn);
+router.route("/auth/google")
+.post(passport.authenticate('googleToken',{session:false}),UserController.UserGoogle)
+router.route("/auth/facebook")
+.post(passport.authenticate('FacebookToken',{session:false}),UserController.UserFacebook)
 
-router.get('/', function(req, res, next) {
-    Users.find()
-    .sort({users:-1})
-    .then(users =>res.json(users))
- 
-});
-router.post("/adduser",upload.single("image"),(req,res)=>{
-    const{username,passwork,email}=req.body
-    if(!username||!passwork ||!email){
-        return res.status(404).json({meg:"pls enter all fields"})
-    }
-    Users.findOne({email})
-    .then(users=>{
-        if (users) {
-            return res.status(404).json({meg:"email have adready exist"})
-        }
-    })
-    
-    
-        var newUsers =new Users({
-           username,
-            passwork,
-            email,
-        }
-        )
-        bcrypt.genSalt(10,(err,salt)=>{
-            bcrypt.hash(newUsers.passwork,salt,(err,hash)=>{
-                if(err) throw err;
-                newUsers.passwork=hash
-                newUsers.save()
-                 .then(users=>{
-                     Jwt.sign(
-                         {users},
-                         config.get('JwtSecret'),
-                         {expiresIn:3600},
-                         (err,token)=>{
-                             if(err) throw err;
-                             res.json({
-                                 token,users
-                             })
-                            })
-                               
-                         }
-                     )
-                     .catch(err=>{
-                       res.json(err)
-                     })
-                      
-            })
-        })
 
-})
-router.post("/addusersfacebook",(req,res)=>{
-  const{ email,username}=req.body
-  UsersFacebook.findOne({email})
-  .then(usersfacebook=>{
-    if(!usersfacebook){
-      var newUsersfacebook =new UsersFacebook({
-         username,
-         email,
-     }
-     )
-     bcrypt.genSalt(10,(err,salt)=>{
-      bcrypt.hash(newUsersfacebook.email,salt,(err,hash)=>{
-          
-          newUsersfacebook.email=hash
-          newUsersfacebook.save()
-           .then(usersfacebook=>{
-               Jwt.sign(
-                   {usersfacebook},
-                   config.get('JwtSecret'),
-                   {expiresIn:3600},
-                   (err,token)=>{
-                       if(err) throw err;
-                       res.json({
-                           token,usersfacebook
-                       })
-                      })
-                         
-                   }
-               )
-               .catch(err=>{
-                 res.json(err)
-               })
-                
-      })
-  })
-    }else{
-      bcrypt.compare(email,usersfacebook.email)
-        .then(isMatch=>{
-          if(!isMatch) return res.status(400).json({mgs:"invalid credential"})
-          Jwt.sign(
-            {usersfacebook},
-            config.get('JwtSecret'),
-            {expiresIn:3600},
-            (err,token)=>{
-                if(err) throw err;
-                res.json({
-                    token,usersfacebook
-                })
-               })
-               .catch(err=>{
-                res.send(err)
-        })
-        })
-    }
-  })
-})
-router.get(
-  "/google",
-  passportFacebook.authenticate("google", { scope: ["profile", "email"] },(req,res,next)=>{
-    err=>{
-      console.log(err);
-      
-    }
-  })
-);
-router.get(
-  "/google/callback",
-  passportFacebook.authenticate('google', { failureRedirect: '/' }),
-  function(req, res) {
-    res.redirect('/');
-  });
 module.exports = router;
