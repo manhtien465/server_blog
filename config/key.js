@@ -19,5 +19,9 @@ facebook:{
     },
     jwt:{
     JWT_SECRET:"tien1245"
+},
+gmail:{
+    username:"xoaycodeeasy",
+    pass:"tien1234"
 }
 }

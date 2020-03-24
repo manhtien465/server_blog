@@ -6,7 +6,7 @@ const key = require("./config/key");
 const Users = require("./scheme/users");
 const UsersFacebook =require("./scheme/usersfacebook")
 const UsersGoogle =require("./scheme/usersgoole")
-
+var bcrypt =require("bcryptjs")
 var jwtOptions = {};
 const GooglePlusTokenStrategy = require("passport-google-plus-token");
 const FacebookTokenStrategy = require("passport-facebook-token");
@@ -118,15 +118,20 @@ passport.use(
         if (!user) {
           return done(null, false);
         }
-        const isMatch = await user.isValidPassword(password);
-        if (!isMatch) {
-          return done(null, false);
+        const salt=await bcrypt.genSalt(10)
+ const passwordHash =await bcrypt.hash(password,salt)
+        
+        if (!password===user.password) {
+           return done(null, false);
+           
+          
+         
         }
         //checked verify email
         if(!user.active){
           return done(null,false,{mes:"you need verify email"})
         }
-        done(null, user);
+         return done(null, user);
       } catch (error) {
         done(error, false);
       }
